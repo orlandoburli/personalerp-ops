@@ -17,6 +17,11 @@ resource "aws_iam_role" "personalerp-eks-cluster-role" {
 POLICY
 }
 
+resource "aws_iam_role_policy_attachment" "personalerp-AdministratorAccess" {
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+  role       = aws_iam_role.personalerp-eks-cluster-role.name
+}
+
 resource "aws_iam_role_policy_attachment" "personalerp-AmazonEKSClusterPolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
   role       = aws_iam_role.personalerp-eks-cluster-role.name
@@ -30,7 +35,7 @@ resource "aws_iam_role_policy_attachment" "personalerp-AmazonEKSServicePolicy" {
 resource "aws_iam_openid_connect_provider" "iam_openid_provider_personalerp" {
   client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = []
-  url             = "${aws_eks_cluster.personalerp_cluster.identity.0.oidc.0.issuer}"
+  url             = aws_eks_cluster.personalerp_cluster.identity.0.oidc.0.issuer
 }
 
 data "aws_caller_identity" "current" {}
@@ -54,7 +59,7 @@ data "aws_iam_policy_document" "openid_personalerp_assume_role_policy" {
 }
 
 resource "aws_iam_role" "personalerp-eks-cluster-role-openid" {
-  assume_role_policy = "${data.aws_iam_policy_document.openid_personalerp_assume_role_policy.json}"
+  assume_role_policy = data.aws_iam_policy_document.openid_personalerp_assume_role_policy.json
   name               = "personalerp-eks-cluster-role-openid"
 }
 
@@ -88,6 +93,11 @@ resource "aws_iam_role_policy_attachment" "personalerp-AmazonEKS_CNI_Policy" {
 
 resource "aws_iam_role_policy_attachment" "personalerp-AmazonEC2ContainerRegistryReadOnly" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = aws_iam_role.personalerp-eks-node-role.name
+}
+
+resource "aws_iam_role_policy_attachment" "personalerp2-AdministratorAccess" {
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
   role       = aws_iam_role.personalerp-eks-node-role.name
 }
 

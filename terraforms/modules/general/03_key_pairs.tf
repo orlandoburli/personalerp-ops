@@ -5,5 +5,5 @@ resource "tls_private_key" "eks-private-key" {
 
 resource "aws_key_pair" "eks-key-pair" {
   key_name   = "eks-key-pair-${var.personalerp_env}"
-  public_key = "${tls_private_key.eks-private-key.public_key_openssh}"
+  public_key = tls_private_key.eks-private-key.public_key_openssh
 }

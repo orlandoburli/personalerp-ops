@@ -1,4 +1,5 @@
-# Network for Cluster
+# General VPC
+
 resource "aws_vpc" "personalerp_private_vpc" {
   cidr_block = "10.0.0.0/16"
 
@@ -7,6 +8,19 @@ resource "aws_vpc" "personalerp_private_vpc" {
     Env = var.personalerp_env
   }
 }
+
+resource "aws_internet_gateway" "personalerp_internet_gateway" {
+  vpc_id = aws_vpc.personalerp_private_vpc.id
+
+  tags = {
+    Name = "personalerp_internet_gateway"
+    Env = var.personalerp_env
+  }
+}
+
+# End General VPC
+
+# Network for Cluster
 
 resource "aws_subnet" "personalerp-eks-subnet01" {
   vpc_id     = aws_vpc.personalerp_private_vpc.id
