@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Security DB",
+      "Group": "PersonalERP",
+      "Port": 5432,
+      "Username": "postgres",
+      "Host": "security-db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres"
+    }
+  }
+}

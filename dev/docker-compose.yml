@@ -1,24 +1,34 @@
-version: '3.3'
-volumes:
-  data:
-services:
-  db:
-    image: mysql:5.6
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./data:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_DATABASE=app_development
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=pass
+version: '3'
 
-  app:
-    image: phpmyadmin/phpmyadmin:latest
-    links:
-      - db
-    ports:
-      - 80:80
+services: 
+
+  security-db:
+    image: postgres
     environment:
-      - PMA_ARBITRARY=1
+      POSTGRES_PASSWORD: "demo"
+      POSTGRES_DB: "personalerp-security-db"
+    ports:
+      - "5401:5432"
+    volumes:
+      - ./data/security-db:/var/lib/postgresql/data 
+    networks:
+      - personalerp-compose-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "orlando.burli@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "JGSaFb2YbmhsN4Yb"
+    ports:
+      - "5400:80"
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+      - ./servers.json:/pgadmin4/servers.json
+    depends_on:
+      - security-db
+    networks:
+      - personalerp-compose-network
+
+networks: 
+  personalerp-compose-network:
+    driver: bridge
