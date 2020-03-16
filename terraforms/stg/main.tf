@@ -1,5 +1,4 @@
 terraform {
-
   required_version = "0.12.20"
   
   backend "s3" {
@@ -20,12 +19,31 @@ provider "tls" {
   version = "~> 2.1"
 }
 
-module "general" {
-  source = "../modules/general"
+module "network" {
+  source = "../modules/network"
+  tags = {
+    Env = basename(path.cwd)
+  }
 
-  personalerp_env = "stg"
+  vpc_tags = {
+    
+  }
 }
 
-module "security" {
-  source = "../modules/security"
-}
+// module "cluster" {
+//   source = "../modules/cluster"
+//   cluster_name = "personalerp-stg"
+//   personalerp_env = "stg"
+//   region = "sa-east-1"
+//   stage = "stg"
+// }
+
+// module "general" {
+//   source = "../modules/general"
+//   personalerp_env = "stg"
+// }
+
+// module "security" {
+//   source = "../modules/security"
+//   personalerp_env = "stg"
+// }
