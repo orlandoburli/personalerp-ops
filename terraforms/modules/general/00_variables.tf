@@ -1,1 +1,0 @@
-variable "personalerp_env" {}

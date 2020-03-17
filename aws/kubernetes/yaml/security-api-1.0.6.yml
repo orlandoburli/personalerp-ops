@@ -1,0 +1,77 @@
+# Security API - Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: security-api-deploy
+spec:
+  replicas: 10
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 5
+      maxSurge: 2
+
+  selector:
+    matchLabels:
+      app: security-api
+  template:
+    metadata:
+      labels:
+        app: security-api
+    spec:
+      imagePullSecrets:
+      - name: personalerp-dockerhub-secret
+      containers:
+      - name: security-api-pod
+        image: oburlijr/personalerp:security-api-1.0.6
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "development"
+        - name: PORT
+          value: "3000"
+        - name: DB_HOST
+          value: "localhost"
+        - name: DB_PORT
+          value: "5401"
+        - name: DB_USER
+          value: "postgres"
+        - name: DB_PASSWORD
+          value: "demo"
+        - name: DB_NAME
+          value: "personalerp-security-db"
+        - name: DB_DIALECT
+          value: "postgres"
+        - name: DB_MAX_CONNECTION_POOL
+          value: "5"
+        - name: DB_MIN_CONNECTION_POOL
+          value: "1"
+        - name: DB_IDLE_TIMEOUT
+          value: "10"
+        - name: DB_ACQUIRE
+          value: "30000"
+        - name: DB_SYNC
+          value: "true"
+        
+---
+
+# Security Api - Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: security-api-svc
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    nodePort: 30001
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: security-api

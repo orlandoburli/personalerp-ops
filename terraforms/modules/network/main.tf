@@ -4,8 +4,7 @@ resource "aws_vpc" "personalerp_private_vpc" {
   tags = merge(
       map("Name", "personalerp_private_vpc"),
       map("kubernetes.io/cluster/${local.cluster_name}", "shared"),
-      var.tags,
-      var.vpc_tags
+      var.tags
   )
 }
 
@@ -30,8 +29,7 @@ resource "aws_subnet" "personalerp-eks-subnet" {
   tags = merge(
       map("Name", "personalerp-eks-subnet"),
       map("kubernetes.io/cluster/${local.cluster_name}", "shared"),
-      var.tags,
-      var.vpc_tags
+      var.tags
   )
 }
 

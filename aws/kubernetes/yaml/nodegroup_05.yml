@@ -1,0 +1,12 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: personalerp-cluster-stg
+  region: sa-east-1
+
+nodeGroups:
+  - name: ng-5
+    instanceType: m5.xlarge
+    desiredCapacity: 2
+    labels: { role: api }
