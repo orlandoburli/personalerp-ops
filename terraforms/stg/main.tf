@@ -51,13 +51,3 @@ module "worknodes" {
     Env = basename(path.cwd)
   }
 }
-
-// module "general" {
-//   source = "../modules/general"
-//   personalerp_env = "stg"
-// }
-
-// module "security" {
-//   source = "../modules/security"
-//   personalerp_env = "stg"
-// }
