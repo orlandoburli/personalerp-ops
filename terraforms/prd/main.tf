@@ -5,7 +5,7 @@ terraform {
     region="sa-east-1"
     profile="personalerp"
     bucket="personalerp-aws-admin"
-    key="personalerp-infra-state-stg"
+    key="personalerp-infra-state-prd"
   }
 }
 
@@ -42,22 +42,12 @@ module "worknodes" {
   eks_subnet_ids = module.network.eks_subnet_ids
   cluster_name   = module.network.cluster_name
 
-  worknodes = 1
-  worknode_desired_size = 2
-  worknode_max_size = 2
+  worknodes = 3
+  worknode_desired_size = 4
+  worknode_max_size = 4
   worknode_min_size = 2
 
   tags = {
     Env = basename(path.cwd)
   }
 }
-
-// module "general" {
-//   source = "../modules/general"
-//   personalerp_env = "stg"
-// }
-
-// module "security" {
-//   source = "../modules/security"
-//   personalerp_env = "stg"
-// }

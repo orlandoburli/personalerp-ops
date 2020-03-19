@@ -12,11 +12,13 @@
 
   * **terraform\modules** - Aqui ficam os módulos do projeto.
 
-    * **terraform\modules\general** - Aqui ficam os obetos comuns ao projeto como um todo (clusters, roles, etc)
+    * **terraform\modules\network** - Criação da infraestrutura básica de rede (VPC, subnets, route tables).
 
-    * **terraform\modules\security** - Aqui ficam os objetos relativos ao módulo ***security*** do projeto.
+    * **terraform\modules\cluster** - Criação do cluster e suas roles
+
+    * **terraform\modules\worknodes** - Criação dos worknodes.
   
-* **aws** - Shell scripts para criação do ambiente AWS (alternativa do terraforms)
+* **aws** - Shell scripts para deploy das aplicações no K8s
 
   * **aws/kubernetes** - Shell scripts para criação do ambiente Kubernetes na Amazon (EKS)
 

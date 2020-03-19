@@ -1,15 +1,17 @@
-resource "aws_eks_node_group" "personalerp_nodegroup01" {
+resource "aws_eks_node_group" "personalerp_nodegroup" {
   cluster_name    = var.cluster_name
-  node_group_name = "${local.node_name}01"
+  node_group_name = "${local.node_name}-${count.index}"
   node_role_arn   = aws_iam_role.personalerp-eks-node-role.arn
   instance_types  = ["t2.micro"]
+
+  count = var.worknodes
 
   subnet_ids = var.eks_subnet_ids
 
   scaling_config {
-    desired_size = 2
-    max_size     = 2
-    min_size     = 2
+    desired_size = var.worknode_desired_size
+    max_size     = var.worknode_max_size
+    min_size     = var.worknode_min_size
   }
   
   tags = var.tags
